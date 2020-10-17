@@ -15,7 +15,7 @@ const roomRoutes = require("./routes/room");
 const routeRoutes = require("./routes/route");
 const inspectorRoutes = require("./routes/inspector");
 const driverRoutes = require("./routes/driver");
-
+const badCustomerRoutes = require("./routes/badCustomer");
 
 // db
 mongoose
@@ -41,6 +41,7 @@ app.use("/api", roomRoutes);
 app.use("/api", routeRoutes);
 app.use("/api", inspectorRoutes);
 app.use("/api", driverRoutes);
+app.use("/api", badCustomerRoutes);
 
 const port = process.env.SERVER_PORT || 8000;
 
