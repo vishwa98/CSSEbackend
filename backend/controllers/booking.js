@@ -1,11 +1,33 @@
 const Booking = require("../models/Booking");
 
-//@desc Get all bookings for the day
-//@route GET api/bookings/
+//@desc Get all bookings which are scanned
+//@route GET api/bookings/scanned
 //@ access public
-exports.getBookings = async (req, res, next) => {
+exports.getScannedBookings = async (req, res, next) => {
   try {
-    const bookings = await Booking.find();
+    const bookings = await Booking.find({ isScanned: true });
+
+    console.log(bookings);
+    res.status(200).json({
+      success: true,
+      length: bookings.length,
+      data: bookings,
+      message: "Successfully fetched",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "server error",
+    });
+  }
+};
+
+//@desc Get all bookings which are not scanned yet
+//@route GET api/bookings/unScanned
+//@ access public
+exports.getUnscannedBookings = async (req, res, next) => {
+  try {
+    const bookings = await Booking.find({ isScanned: false });
 
     console.log(bookings);
     res.status(200).json({

@@ -3,12 +3,16 @@ const express = require("express");
 const {
   addBooking,
   deleteBookings,
-  getBookings,
+  getScannedBookings,
+  getUnscannedBookings,
 } = require("../controllers/booking");
 
 const router = express.Router();
 
-router.route("/").get(getBookings).post(addBooking);
+router.route("/").post(addBooking);
+
+router.route("/scanned").get(getScannedBookings);
+router.route("/unScanned").get(getUnscannedBookings);
 
 router.route("/:id").delete(deleteBookings);
 
