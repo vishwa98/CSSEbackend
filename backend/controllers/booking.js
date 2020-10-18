@@ -46,7 +46,7 @@ exports.addBooking = async (req, res, next) => {
   }
 };
 
-//@desc Clear all bookings end of the day and unassign all substations and staff members
+//@desc Clear all bookings end of the day
 //@route POST api/bookings/:id
 //@ access public
 exports.deleteBookings = async () => {
