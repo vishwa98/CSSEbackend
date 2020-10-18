@@ -16,6 +16,7 @@ const routeRoutes = require("./routes/route");
 const inspectorRoutes = require("./routes/inspector");
 const driverRoutes = require("./routes/driver");
 const badCustomerRoutes = require("./routes/badCustomer");
+const bookingRoutes = require("./routes/booking");
 
 // db
 mongoose
@@ -42,6 +43,7 @@ app.use("/api", routeRoutes);
 app.use("/api", inspectorRoutes);
 app.use("/api", driverRoutes);
 app.use("/api", badCustomerRoutes);
+app.use("/api/booking", bookingRoutes);
 
 const port = process.env.SERVER_PORT || 8000;
 
