@@ -46,7 +46,7 @@ exports.addBooking = async (req, res, next) => {
   }
 };
 
-//@desc Clear all bookings end of the day
+//@desc Delete a booking
 //@route POST api/bookings/:id
 //@ access public
 exports.deleteBookings = async () => {
