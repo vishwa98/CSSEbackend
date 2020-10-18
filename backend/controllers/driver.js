@@ -1,67 +1,132 @@
 const Driver = require("../models/driver");
+const Booking = require("../models/Booking");
 
-exports.createDriver = (req,res) => {
+exports.createDriver = (req, res) => {
+  console.log("req.body", req.body);
 
-    console.log("req.body", req.body);
+  const driver = new Driver(req.body);
 
-    const driver = new Driver(req.body);
+  driver.save((error, driver) => {
+    if (error) {
+      res.json(error);
+    }
 
-    driver.save((error, driver) => {
+    res.json(driver);
+  });
+};
 
-        if (error){
-            res.json(error);
-        }
+exports.allDrivers = (req, res) => {
+  Driver.find().exec((error, data) => {
+    if (error) {
+      res.json(error);
+    } else res.json(data);
+  });
+};
 
-        res.json(driver);
-
-    })
-}
-
-exports.allDrivers = (req,res) => {
-
-    Driver.find().exec((error, data) => {
-        if(error){
-            res.json(error)
-
-        }
-        else
-
+exports.updateDriver = (req, res) => {
+  Driver.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: req.body,
+    },
+    (error, data) => {
+      if (error) {
+        res.json(error);
+      } else {
         res.json(data);
-    });
-}
+        console.log("Post updated");
+      }
+    }
+  );
+};
 
+exports.deleteDriver = (req, res) => {
+  Driver.findByIdAndRemove(req.params.id, (error, data) => {
+    if (error) {
+      res.json(error);
+    } else {
+      res.status(200).json({
+        msg: data,
+      });
+    }
+  });
+};
 
-exports.updateDriver = (req,res) => {
+exports.authenticateDriver = (req, res) => {
+  Driver.findOne({ name: req.body.username }, (error, dbResponse) => {
+    if (error || !dbResponse) {
+      return res.json({ isError: true, msg: "Driver not found!" });
+    } else {
+      if (req.body.password == dbResponse.password) {
+        console.log({
+          isError: false,
+          msg: "Authenticated successfully...",
+        });
+        return res.json({
+          isError: false,
+          msg: "Authenticated successfully...",
+        });
+      } else {
+        return res.json({ isError: true, msg: "Wrong password..." });
+      }
+    }
+  });
+};
 
-    Driver.findByIdAndUpdate(req.params.id, {
-        $set: req.body
-    }, (error, data) => {
-        if(error){
-            res.json(error);
+exports.validateBooking = (req, res) => {
+  Booking.findOne({ _id: req.body.bookingId }, (error, dbResponse) => {
+    if (error || !dbResponse) {
+      return res.json({ isError: true, msg: "Booking not found!" });
+    }
+
+    if (dbResponse.isScanned) {
+      return res.json({ isError: true, msg: "Booking has Expired!" });
+    } else {
+      return res.json({ isError: false, msg: "Booking is valid!" });
+    }
+  });
+};
+
+exports.setBookingStatus = (req, res) => {
+  Booking.findOne({ _id: req.body.bookingId }, (error, dbResponse) => {
+    if (error || !dbResponse) {
+      return res.json({ isError: true, msg: "Booking not found!" });
+    }
+
+    if (dbResponse.isScanned) {
+      return res.json({ isError: true, msg: "Booking has already Expired!" });
+    } else {
+      dbResponse.isScanned = true;
+      dbResponse.save((err) => {
+        if (!err) {
+          return res.json({ isError: false, msg: "Booking status changed!" });
+        } else {
+          return res.json({
+            isError: true,
+            msg: "Booking status update failed!",
+          });
         }
-        else{
-            res.json(data);
-            console.log('Post updated');
+      });
+    }
+  });
+};
+
+exports.updateRoute = (req, res) => {
+  Driver.findOne({ name: req.body.username }, (error, dbResponse) => {
+    if (error || !dbResponse) {
+      return res.json({ isError: true, msg: "Driver not found!" });
+    } else {
+      dbResponse.route = req.body.route;
+      dbResponse.save((err) => {
+        if (!err) {
+          return res.json({ isError: false, msg: "Driver route changed!" });
+        } else {
+          return res.json({
+            isError: true,
+            msg: "Driver route update failed!",
+          });
         }
-    })
-}
-
-
-
-exports.deleteDriver = (req,res) => {
-
-    Driver.findByIdAndRemove(req.params.id, (error, data) => {
-        if(error){
-            res.json(error);
-        }
-        else{
-            res.status(200).json({
-                msg : data
-            })
-        }
-    })
-}
-
-
-
-
+      });
+    }
+  });
+};
