@@ -63,7 +63,7 @@ exports.deleteBookings = async () => {
     } else {
       return res.status(404).json({
         success: false,
-        message: "Category not found",
+        message: "Booking not found",
       });
     }
   } catch (error) {
