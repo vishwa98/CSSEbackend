@@ -4,23 +4,32 @@ const { v4: uuidv4 } = require('uuid');
 
 const badCustomerSchema = new mongoose.Schema(
   {
+    
     currentHalt: {
-      type: String
+      type: String,
+    },
+
+    inspectorName: {
+      type: String,
     },
 
     badCustomerId: {
       type: String,
     },
 
-    customerDetails: [{
-      name: String,
-      start: String,
-      destination: String,
-      price: Number,
-    }],
+    booking: [{
+      route: String,
+      startHalt: String,
+      endHalt: String,
+      isScanned: Boolean,
+      fair: Number,
+      fname:String,
+      lname:String,
+      phone:String,
+    }]
 
   },
-  { timestamps: true }
+  { collection: "BadCustomers" }
 );
 
 badCustomerSchema.pre("save", function(next) {

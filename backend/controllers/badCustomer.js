@@ -1,4 +1,4 @@
-const BadCustomer = require("../models/badCustomer");
+const BadCustomer = require("../models/badCustomer")
 
 exports.badCustomerDetails = (req,res) => {
 
@@ -20,7 +20,7 @@ exports.createBadCustomer = (req,res) => {
         res.json(badCustomer);
 
     })
-}
+};
 
 exports.badCustomerList = (req,res) => {
 
@@ -33,7 +33,7 @@ exports.badCustomerList = (req,res) => {
 
         res.json(data);
     });
-}
+};
 
 exports.delBadCustomer = (req,res) => {
 
